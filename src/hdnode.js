@@ -33,16 +33,25 @@ class HDNode {
    *   bchjs.HDNode.fromSeed(seedBuffer);
    */
   fromSeed(rootSeedBuffer, network = "mainnet") {
-    let bitcoincash
-    if (network === "bitcoincash" || network === "mainnet")
-      bitcoincash = coininfo.bitcoincash.main
-    else bitcoincash = coininfo.bitcoincash.test
+    try {
+      let bitcoincash
 
-    const bitcoincashBitcoinJSLib = bitcoincash.toBitcoinJS()
-    return Bitcoin.HDNode.fromSeedBuffer(
-      rootSeedBuffer,
-      bitcoincashBitcoinJSLib
-    )
+      if (network === "bitcoincash" || network === "mainnet")
+        bitcoincash = coininfo.bitcoincash.main
+      else bitcoincash = coininfo.bitcoincash.test
+
+      const bitcoincashBitcoinJSLib = bitcoincash.toBitcoinJS()
+
+      console.log(`bitcoincashBitcoinJSLib: `, bitcoincashBitcoinJSLib)
+
+      return Bitcoin.HDNode.fromSeedBuffer(
+        rootSeedBuffer,
+        bitcoincashBitcoinJSLib
+      )
+    } catch (err) {
+      console.error(`Error in hdnode.js/fromSeed(): `, err)
+      throw err
+    }
   }
 
   /**
